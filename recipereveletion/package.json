@@ -1,9 +1,12 @@
 {
+  "homepage": "https://riskyazis.github.io/projectippl ",
   "name": "recipereveletion",
   "private": true,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist",
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
@@ -11,10 +14,13 @@
   },
   "dependencies": {
     "axios": "^1.5.0",
+    "bootstrap": "^5.3.2",
     "figma-js": "^1.16.0",
+    "firebase": "^10.4.0",
+    "gh-pages": "^6.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-router-dom": "^5.2.0"
+    "react-router-dom": "^6.16.0"
   },
   "devDependencies": {
     "@types/react": "^18.2.15",

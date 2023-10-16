@@ -1,28 +1,32 @@
-import React from 'react';
-import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom';
-import Login from './login';
-import Register from './register';
-import Header from './bahan';
+import React, { useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Login from '../src/pages/login';
+import Register from '../src/pages/register';
+import Halamanutama from '../src/pages/halaman utama';
+import Header from './component/headbar';
+import MyAccount from './pages/myAccount';
+import CookingDictionary from './pages/cookingDictionary';
+import RecipeList from './pages/myRecipe';
+import "./utils/firebase"
 
-function App() {
+
+export default function App() {
+
+
   return (
+
     <Router>
-      <div>
-        <Header>
-        </Header>
-        <Switch>
-          <Route path="/login">
-            <Login />
-          </Route>
-          <Route path="/register">
-            <Register />
-          </Route>
-        </Switch>
-      </div>
+      <Header>
+      </Header>
+      <Routes>
+        <Route path="/" element={<Halamanutama />} />
+        <Route path="/login" element= {<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/myAccount" element={<MyAccount />} />
+        <Route path="/cookingDictionary" element={<CookingDictionary />} />
+        <Route path="/myRecipe" element={<RecipeList />} />
+      </Routes>
     </Router>
   );
 }
-
-export default App;
-
 

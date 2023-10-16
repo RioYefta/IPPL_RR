@@ -1,0 +1,109 @@
+.Email {
+    width: 100%;
+    padding: 10px;
+    background-color: #004A2F;
+    color: #ffffff;
+    border: none;
+    border-radius: 20px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+.Google {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    background-color: #ffffff;
+    color: #000000;
+    border: 1px solid #000000;
+    border-radius: 20px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+
+.Register {
+    width: 100%;
+    padding: 10px;
+    background-color: #004A2F;
+    color: #ffffff;
+    border: none;
+    border-radius: 20px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+
+.Logout {
+    width: 100%;
+    padding: 10px;
+    margin-top: 15px;
+    margin-right: 100px;
+    background-color: #004A2F;
+    color: #ffffff;
+    border: none;
+    border-radius: 20px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #004A2F; /* Warna latar belakang header */
+    color: #fff; /* Warna teks header */
+    padding: 10px 20px; /* Ruang bantal di dalam header */
+  }
+  
+  /* Gaya logo */
+  .logo img {
+    width: 100px; /* Lebar gambar logo */
+  }
+  
+  /* Gaya navigasi menu */
+  nav ul {
+    list-style: none;
+    display: flex;
+  }
+  
+  nav ul li {
+    margin-right: 20px; /* Jarak antara item menu */
+  }
+  
+  nav ul li:last-child {
+    margin-right: 0; /* Hapus margin kanan pada item menu terakhir */
+  }
+  
+  nav ul li a {
+    text-decoration: none; /* Hapus garis bawah pada tautan */
+    color: #fff; /* Warna teks tautan */
+    font-weight: bold; /* Ketebalan font teks tautan */
+  }
+  
+  /* Gaya area autentikasi (Masuk dan Daftar) */
+  .auth a {
+    text-decoration: none;
+    color: #fff;
+    margin-left: 0px; /* Jarak antara teks Masuk dan Daftar */
+    border-radius: 20px;
+    align-items: center;
+  }
+  
+  .auth a:last-child {
+    margin-left: 20px; /* Hapus margin kiri pada teks Daftar */
+    border-radius: 20px;
+    align-items: center;
+  }
+/* CSS untuk gambar profil */
+
+.profil {
+    width: 35px; /* Lebar gambar profil */
+    height: 35px; /* Tinggi gambar profil */
+    object-fit: cover; /* Scale gambar agar sesuai dengan ukuran kotak */
+    border-radius: 50%; /* Agar gambar menjadi lingkaran (bentuk profil) */
+    position: absolute; /* Gunakan posisi absolut */
+    top: 25px; /* Jarak dari atas (sesuaikan sesuai kebutuhan) */
+    right: 40px;
+  }
+  
+
+  
