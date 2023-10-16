@@ -1,0 +1,128 @@
+body {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #002F35; 
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-size: 80% 700%;
+  background-color: #002F35;
+}
+
+.login-box {
+  background-color: rgb(255, 255, 255); 
+  border: 1px solid #ccc;
+  padding-top: 15px;
+  padding-left: 40px;
+  padding-right: 40px;
+  border-radius: 20px;
+  padding-bottom: 40px;
+  max-width: 400px;
+  width: 100%;
+}
+
+.register-box {
+  background-color: rgb(255, 255, 255); 
+  border: 1px solid #ccc;
+  padding-top: 15px;
+  padding-left: 40px;
+  padding-right: 40px;
+  border-radius: 20px;
+  padding-bottom: 40px;
+  max-width: 400px;
+  width: 100%;
+}
+
+h1 {
+  text-align: center;
+  font-size: large;
+  margin-bottom: 25px;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+input {
+  width: 93%;
+  padding: 7px;
+  margin-bottom: 16px;
+  background-color: #D9D9D9;
+  border: 1px solid #D9D9D9;
+  border-radius: 50px;
+}
+
+p {
+  margin-top: 0px;
+}
+
+button {
+  width: 100%;
+  padding: 10px;
+  background-color: #002F35;
+  color: #f9f9f9;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-top: 20px;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-color: #004A2F;
+  color: #fff;
+  padding: 10px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 100; /* Menyimpan header di atas konten */
+}
+
+/* Gaya lainnya seperti yang Anda inginkan */
+.logo {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.nav-list {
+  list-style: none;
+  padding: 0;
+  display: flex;
+}
+
+.nav-list li {
+  margin-right: 20px;
+}
+
+.nav-list li:last-child {
+  margin-right: 0;
+}
+
+.nav-list li a {
+  text-decoration: none;
+  color: #fff;
+  transition: color 0.3s;
+}
+
+.nav-list li a:hover {
+  color: #ff4500; /* Warna saat hover */
+}
+
