@@ -25,3 +25,4 @@ function CookingDictionary() {
 }
 
 export default CookingDictionary;
+

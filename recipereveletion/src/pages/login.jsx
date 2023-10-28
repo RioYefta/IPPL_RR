@@ -15,7 +15,7 @@ const Login = () => {
     .then((result)=>{
       console.info(result.user)
       localStorage.setItem('user', JSON.stringify(result.user))
-      navigate("/")
+      navigate("/reciperevelation/")
     })
     .catch((err)=>{
       console.error(err)
@@ -31,7 +31,7 @@ const Login = () => {
     <div className="login-container">
       <h2>MASUK</h2>
       <LoginForm onLogin={handleLogin} />
-      <p>belum punya akun? <Link to="/register"> Daftar disini </Link></p>
+      <p>belum punya akun? <Link to="/reciperevelation/register"> Daftar disini </Link></p>
       <button className="Google" type='button' onClick={handleGoogleLogin}>
       Masuk Dengan GOOGLE
       </button>

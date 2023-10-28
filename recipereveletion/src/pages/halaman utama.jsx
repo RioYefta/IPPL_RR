@@ -1,25 +1,55 @@
 import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import './Halaman.css';
 
 export default function HalamanUtama() {
   const [sajian, setSajian] = useState('');
   const [khas, setKhas] = useState('');
   const [caraMasak, setCaraMasak] = useState('');
   const [bahan, setBahan] = useState('');
-  const [isFormValid, setIsFormValid] = useState(false); // State untuk menyimpan status validasi
+  const [isFormValid, setIsFormValid] = useState(false);
+  const [gptResponse, setGptResponse] = useState('');
+  const [isCreatingRecipe, setIsCreatingRecipe] = useState(false);
+  
+
+  const callGPTAPI = async () => {
+    setIsCreatingRecipe(true);
+
+    try {
+      const response = await fetch('https://api.openai.com/v1/engines/text-davinci-003/completions', {
+        method: 'POST',
+        headers: {
+          'Authorization': 'Bearer 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',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          prompt: `Buatkan satu resep makanan dengan sajian ${sajian}, dengan khas dari ${khas}, Cara Masak ${caraMasak}, menggunakan Bahan-bahan berikut ${bahan}. 
+                    Pisahkan resep menjadi tiga paragraf yang berbeda tanpa menuliskan kata paragfar di depannya. 
+                    Bagian paragraf awal adalah judul, Bagian paragraf kedua adalah alat dan bahan, dan Bagian paragraf ketiga adalah cara masaknya.`,
+          max_tokens: 2000,
+        }),
+      });
+
+      const data = await response.json();
+      const responseText = data.choices[0].text;
+      const [judul, alatBahan, caraMasak2, baru] = responseText.split('\n\n');
+
+      setGptResponse({ judul, alatBahan, caraMasak2, baru });
+    } catch (error) {
+      console.error('Terjadi kesalahan:', error);
+    } finally {
+      setIsCreatingRecipe(false);
+    }
+  };
 
   const handleSubmit = () => {
-    // Lakukan aksi saat tombol "Submit" ditekan
     if (sajian && khas && caraMasak && bahan) {
-      // Lakukan aksi yang sesuai jika semua inputan terisi
-      console.log('Resep berhasil dibuat:', sajian, khas, caraMasak, bahan);
+      callGPTAPI();
     } else {
-      // Tampilkan peringatan jika ada inputan yang kosong
       alert('Mohon isi semua inputan terlebih dahulu.');
     }
   };
 
-  // Fungsi untuk memeriksa apakah semua inputan terisi
   const checkFormValidity = () => {
     if (sajian && khas && caraMasak && bahan) {
       setIsFormValid(true);
@@ -135,9 +165,25 @@ export default function HalamanUtama() {
               Buat Resep
             </button>
           </div>
+          {isCreatingRecipe && (
+            <div className="creating-recipe">
+              <p>Sedang Membuat Resep...</p>
+              <div className="loader"></div>
+            </div>
+          )}
+          {gptResponse && (
+            <div className="result-box">
+              <h2>Resep Anda</h2>
+              <p>{gptResponse.judul}</p>
+              <p> Nama Masakan: {gptResponse.alatBahan}</p>
+              <p> {gptResponse.caraMasak2}</p>
+              <p>{gptResponse.baru}</p>
+            </div>
+          )}
         </div>
       </div>
     </div>
   );
 }
+
 

@@ -17,7 +17,7 @@ function MyAccount() {
     signOut(auth)
       .then(result => {
         localStorage.clear()
-        navigate("/") 
+        navigate("/reciperevelation/") 
       })
       .catch((err) => {
         console.error(err)

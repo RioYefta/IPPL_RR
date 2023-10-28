@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Login from '../src/pages/login';
 import Register from '../src/pages/register';
@@ -16,17 +16,18 @@ export default function App() {
   return (
 
     <Router>
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.min.js"></script>
+
       <Header>
       </Header>
       <Routes>
-        <Route path="/" element={<Halamanutama />} />
-        <Route path="/login" element= {<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/myAccount" element={<MyAccount />} />
-        <Route path="/cookingDictionary" element={<CookingDictionary />} />
-        <Route path="/myRecipe" element={<RecipeList />} />
+        <Route path="/reciperevelation" element={<Halamanutama />} />
+        <Route path="/reciperevelation/login" element= {<Login />} />
+        <Route path="/reciperevelation/register" element={<Register />} />
+        <Route path="/reciperevelation/myAccount" element={<MyAccount />} />
+        <Route path="/reciperevelation/cookingDictionary" element={<CookingDictionary />} />
+        <Route path="/reciperevelation/myRecipe" element={<RecipeList />} />
       </Routes>
     </Router>
   );
 }
-

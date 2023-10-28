@@ -13,7 +13,7 @@ function Register() {
     <div className="register-container">
       <h2>Daftar</h2>
       <Registerform onRegister={handleregister} />
-      <p>sudah punya akun?  <Link to="/login"> masuk </Link></p>
+      <p>sudah punya akun?  <Link to="/reciperevelation/login"> masuk </Link></p>
     </div>
   );
 };
