@@ -27,7 +27,7 @@ export default function HalamanUtama() {
       const response = await fetch('https://api.openai.com/v1/engines/text-davinci-003/completions', {
         method: 'POST',
         headers: {
-          'Authorization': 'Bearer (API KEY)',
+          'Authorization': 'Bearer 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',
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
