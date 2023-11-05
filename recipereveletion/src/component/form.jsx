@@ -1,108 +1,138 @@
 import React, { useState } from 'react';
-import { Emaillogin , Register } from '../component/button'
+import { getAuth, createUserWithEmailAndPassword , signInWithEmailAndPassword} from "firebase/auth"
+import FloatingMessage from '../component/pesan';
+import { useNavigate } from 'react-router-dom'; 
+import './Bahan.css';
 
-const LoginForm = ({ onLogin }) => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    if (name === 'username') {
-      setUsername(value);
-    } else if (name === 'password') {
-      setPassword(value);
-    }
-  };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    onLogin({ username, password });
-  };
-
-  return (
-    <form onSubmit={handleSubmit}>
-      <input
-        type="text"
-        name="username"
-        placeholder="Username"
-        value={username}
-        onChange={handleInputChange}
-      />
-      <input
-        type="password"
-        name="password"
-        placeholder="Password"
-        value={password}
-        onChange={handleInputChange}
-      />
-      <Emaillogin  onLogin={handleSubmit} />
-    </form>
-  );
-};
-
-const Registerform = ({ onRegister }) => {
-  const [username, setUsername] = useState('');
+const LoginForm = ({}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    if (name === 'username') {
-      setUsername(value);
-    } else if (name === 'email') {
-      setEmail(value);
-    } else if (name === 'password') {
-      setPassword(value);
-    } else if (name === 'confirmPassword') {
-      setConfirmPassword(value);
-    }
-  };
+  const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleLogin = (e) => {
     e.preventDefault();
-    // Pastikan password cocok dengan konfirmasi password sebelum mengirimkan data pendaftaran
-    if (password === confirmPassword) {
-      onRegister({ username, email, password });
-    } else {
-      alert('Konfirmasi password tidak cocok.');
-    }
-  };
+
+    const auth = getAuth();
+    signInWithEmailAndPassword(auth, email, password)
+    .then((result) => {
+      console.info(result.user)
+      localStorage.setItem('user', JSON.stringify(result.user))
+      navigate("/reciperevelation/")
+    })
+    .catch((err)=>{
+      console.error(err)
+    })
+  }
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form>
       <input
-        type="text"
-        name="username"
-        placeholder="Username"
-        value={username}
-        onChange={handleInputChange}
-      />
-      <input
-        type="email"
-        name="email"
-        placeholder="Email"
-        value={email}
-        onChange={handleInputChange}
-      />
-      <input
-        type="password"
-        name="password"
-        placeholder="Password"
-        value={password}
-        onChange={handleInputChange}
-      />
-      <input
-        type="password"
-        name="confirmPassword"
-        placeholder="Konfirmasi Password"
-        value={confirmPassword}
-        onChange={handleInputChange}
-      />
-      <Register  onRegister={handleSubmit} />
+          type="email"
+          id="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <input
+          type="password"
+          id="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+      <button className="Email" onClick={handleLogin}>Masuk</button>
     </form>
   );
 };
 
 
-export {LoginForm, Registerform};
+const Registerform = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [password2, setPassword2] = useState('');
+  const [error, setError] = useState(null);
+  const [successMessage, setSuccessMessage] = useState('')
+
+  const navigate = useNavigate();
+
+  const handleregister = (e) => {
+    e.preventDefault();
+
+    if (!email || !password || !password2 ) {
+      return alert('Silahkan lengkapi data');
+    }
+
+    if (password !== password2) {
+      return alert('Password harus sama');
+    }
+
+    if (password.length < 8) {
+      return alert('Password harus lebih dari 8 karakter');
+    }
+
+    const auth = getAuth();
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((result) => {
+        console.info('Pendaftaran berhasil:', result.user);
+        navigate("/reciperevelation/login")
+        setSuccessMessage('Registrasi berhasil! Selamat datang, ' + user.email);
+        setError(null);
+      })
+      .catch((error) => {
+        if (error.code === 'auth/email-already-in-use') {
+          setError('Email sudah terdaftar. Silahkan gunakan email lain.');
+        } else {
+          setError('Pendaftaran gagal. Error: ' + error.message);
+        }
+        setSuccessMessage('');
+      });
+  };
+
+  return (
+    <section>
+      <form>
+        <input
+          type="email"
+          id="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <input
+          type="password"
+          id="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <input
+          type="password"
+          id="password2"
+          placeholder="Konfirmasi Password"
+          value={password2}
+          onChange={(e) => setPassword2(e.target.value)}
+        />
+        {error && <div className="error">{error}</div>}
+        <button className="Register" onClick={handleregister}>Daftar</button>
+      </form>
+
+      <form>
+        {successMessage && (
+        <FloatingMessage
+          message={successMessage}
+          duration={3000}
+          onMessageClose={() => setSuccessMessage('')}
+        />
+        )}
+      </form>
+    </section>
+  );
+};
+
+
+export { LoginForm, Registerform };
+
+

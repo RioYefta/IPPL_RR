@@ -4,15 +4,11 @@ import { Link } from "react-router-dom"
 import './Halaman.css'
 
 function Register() {
-  const handleregister = (userData) => {
-    // Tambahkan logika autentikasi di sini
-    console.log('User data:', userData);
-  };
 
   return (
     <div className="register-container">
       <h2>Daftar</h2>
-      <Registerform onRegister={handleregister} />
+      <Registerform  />
       <p>sudah punya akun?  <Link to="/reciperevelation/login"> masuk </Link></p>
     </div>
   );

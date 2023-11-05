@@ -1,28 +1,49 @@
 import React from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css'; 
+import { useEffect, useState } from 'react';
+import { collection, getDocs } from 'firebase/firestore';
+import { firestore } from '../utils/firebase'; 
+import Popup  from '../component/popupcd';
 
-function CookingDictionary() {
+function IstilahList() {
+  const [istilahs, setIstilahs] = useState([]);
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [selectedIstilah, setSelectedIstilah] = useState(null);
+
+  // Fungsi untuk mengambil daftar istilah dari Firestore
+  const fetchIstilahs = async () => {
+    const istilahCollection = collection(firestore, 'istilah'); // 'istilah' adalah nama koleksi di Firestore Anda
+    const querySnapshot = await getDocs(istilahCollection);
+    const istilahList = [];
+    querySnapshot.forEach((doc) => {
+      istilahList.push(doc.data());
+    });
+    setIstilahs(istilahList);
+  };
+
+  useEffect(() => {
+    // Panggil fungsi untuk mengambil istilah saat komponen dimuat
+    fetchIstilahs();
+  }, []);
+
   return (
-    <div className="container text-center text-light" style={{ height: '100vh' }}>
-      <div className="row justify-content-center">
-        <div className="col-10">
-          <h6>
-            Buat resepmu sendiri dan temukan beragam ide resep makanan yang tak terbatas di sini.
-            <p>Jelajahi dunia kuliner tanpa batas, mengeksplorasi rasa baru, dan menciptakan hidangan lezat yang tak terlupakan.</p>
-          </h6>
-        </div>
+    <div style={{ backgroundColor: '#002F35', minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+      <h1 style={{ margin: '0', marginBottom: '30px', color: 'white' }}>Cooking Dictionary</h1>
+      <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '10px' }}>
+        {istilahs.map((istilah, index) => (
+          <button key={index} style={{ padding: '5px 10px', whiteSpace: 'nowrap', borderRadius: '20px', minWidth: '100px', backgroundColor: '#004A2F', color: 'white' }}
+            onClick={() => {
+              setSelectedIstilah(istilah);
+              setIsPopupOpen(true);
+            }}
+          >
+            {istilah.nama}
+          </button>
+        ))}
       </div>
-      <button type="button" className="btn btn-outline-primary">Primary</button>
-      <button type="button" className="btn btn-outline-secondary">Secondary</button>
-      <button type="button" className="btn btn-outline-success">Success</button>
-      <button type="button" className="btn btn-outline-danger">Danger</button>
-      <button type="button" className="btn btn-outline-warning">Warning</button>
-      <button type="button" className="btn btn-outline-info">Info</button>
-      <button type="button" className="btn btn-outline-light">Light</button>
-      <button type="button" className="btn btn-outline-dark">Dark</button>
+      {isPopupOpen && <Popup setIsOpenPopup={setIsPopupOpen} istilah={selectedIstilah} />}
     </div>
   );
 }
 
-export default CookingDictionary;
+export default IstilahList;
 

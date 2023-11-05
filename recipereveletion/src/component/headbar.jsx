@@ -37,7 +37,7 @@ function Header() {
   };
 
   return (
-    <Navbar variant="dark" expand="lg" style={{ backgroundColor:  '#004A2F' }}>
+    <Navbar variant="dark" expand="lg" style={{ backgroundColor: '#004A2F' }} className="sticky-top">
       <Navbar.Brand as={Link} to="/reciperevelation/">
         <Image src="src/assets/rr_logo.png" alt="Logo" width="100" height="50" />
       </Navbar.Brand>
@@ -71,6 +71,7 @@ function Header() {
 }
 
 export default Header;
+
 
 
 

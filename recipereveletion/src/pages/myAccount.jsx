@@ -25,36 +25,39 @@ function MyAccount() {
   }
 
   return (
-    <div className="container" style={{ height: '100vh' }}>
-      {/* Content here */}
-      <div className="container text-dark">
-        <div className="row justify-content-center">
-          <div className="card w-100">
-            <div className="card-body">
-              <h5 className="card-title">My Account</h5>
-              {user ? ( // Tampilkan jika pengguna sudah login
-                <div>
-                  <div className="form-floating mb-3">
-                    <img src={user.photoURL} alt="" />
-                  </div>
-                  <div className="form-floating mb-3">
-                    <h3>{user.email}</h3>
-                  </div>
-                  <button className="Logout" type='button' onClick={handleLogout}>
-                    Logout
-                  </button>
+    <div style={{
+      display: 'flex',
+      flexDirection: 'column', 
+    }}>
+    <div className="container text-dark">
+      <div className="container d-flex justify-content-center align-items-center" style={{ minHeight: '100vh'}}>
+        <div className="card" style={{ width: '500px' }}>
+          <div className="card-body">
+            <h5 className="card-title ">My Account</h5>
+            {user ? ( // Tampilkan jika pengguna sudah login
+              <div className="text-center">
+                <div className="form-floating mb-3">
+                  <img src={user.photoURL} alt="" />
                 </div>
-              ) : ( // Tampilkan jika pengguna belum login
-                <div>
-                  <p> Anda belum login. </p>
+                <div className="form-floating mb-3">
+                  <p>{user.email}</p>
                 </div>
-              )}
-            </div>
+                <button className="Logout" type='button' onClick={handleLogout}>
+                  Logout
+                </button>
+              </div>
+            ) : ( // Tampilkan jika pengguna belum login
+              <div className="text-center">
+                <p> Anda belum login. </p>
+              </div>
+            )}
           </div>
         </div>
       </div>
     </div>
-  );
+  </div>
+  )
+
 }
 
 export default MyAccount;

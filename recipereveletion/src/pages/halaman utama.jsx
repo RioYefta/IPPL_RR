@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
+import { getAuth } from 'firebase/auth';
+import { getFirestore, doc, setDoc, collection, addDoc, serverTimestamp, getDoc } from 'firebase/firestore';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './Halaman.css';
+
+
 
 export default function HalamanUtama() {
   const [sajian, setSajian] = useState('');
@@ -10,16 +14,20 @@ export default function HalamanUtama() {
   const [isFormValid, setIsFormValid] = useState(false);
   const [gptResponse, setGptResponse] = useState('');
   const [isCreatingRecipe, setIsCreatingRecipe] = useState(false);
+  const [savedRecipe, setSavedRecipe] = useState(null);
+  const [pesan, setPesan] = useState('');
   
+  const db = getFirestore();
 
   const callGPTAPI = async () => {
+
     setIsCreatingRecipe(true);
 
     try {
       const response = await fetch('https://api.openai.com/v1/engines/text-davinci-003/completions', {
         method: 'POST',
         headers: {
-          'Authorization': 'Bearer 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',
+          'Authorization': 'Bearer (API KEY)',
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
@@ -32,8 +40,9 @@ export default function HalamanUtama() {
 
       const data = await response.json();
       const responseText = data.choices[0].text;
-      const [judul, alatBahan, caraMasak2, baru] = responseText.split('\n\n');
+      const [baru, judul , alatBahan, caraMasak2] = responseText.split('\n\n');
 
+      setSavedRecipe({ judul, alatBahan, caraMasak2});
       setGptResponse({ judul, alatBahan, caraMasak2, baru });
     } catch (error) {
       console.error('Terjadi kesalahan:', error);
@@ -57,6 +66,63 @@ export default function HalamanUtama() {
       setIsFormValid(false);
     }
   };
+
+  const simpanResep = async () => {
+    if (savedRecipe) {
+      const auth = getAuth();
+      const user = auth.currentUser;
+  
+      if (user) {
+        try {
+          const userDocRef = doc(db, 'users', user.uid);
+          const userDocSnap = await getDoc(userDocRef); // Menggunakan getDoc untuk mengambil dokumen
+  
+          if (userDocSnap.exists()) {
+            // Dokumen pengguna sudah ada, tambahkan resep ke koleksi resep pengguna
+            const resepDenganTimestamp = {
+              ...savedRecipe,
+              timestamp: serverTimestamp(),
+            };
+  
+            const resepCollectionRef = collection(userDocRef, 'resep'); // Koleksi resep dalam dokumen pengguna
+            const docRef = await addDoc(resepCollectionRef, resepDenganTimestamp);
+  
+            console.log('Resep berhasil disimpan dengan ID:', docRef.id);
+            setPesan('Resep berhasil disimpan.');
+          } else {
+            // Dokumen pengguna belum ada, buat dokumen pengguna dan tambahkan resep
+            const userData = {
+              // Data tambahan pengguna jika diperlukan
+            };
+  
+            await setDoc(userDocRef, userData);
+  
+            const resepDenganTimestamp = {
+              ...savedRecipe,
+              timestamp: serverTimestamp(),
+            };
+  
+            const resepCollectionRef = collection(userDocRef, 'resep'); // Koleksi resep dalam dokumen pengguna
+            const docRef = await addDoc(resepCollectionRef, resepDenganTimestamp);
+  
+            console.log('Resep berhasil disimpan dengan ID:', docRef.id);
+            setPesan('Resep berhasil disimpan.');
+          }
+        } catch (error) {
+          console.error('Terjadi kesalahan saat menyimpan resep:', error);
+          setPesan('Terjadi kesalahan saat menyimpan resep. Coba lagi nanti.');
+        }
+      } else {
+        console.error('Pengguna belum login.');
+        setPesan('Anda harus login untuk menyimpan resep.');
+      }
+    } else {
+      setPesan('Resep belum tersedia. Harap buat resep terlebih dahulu.');
+    }
+  };
+  
+  
+  
 
   return (
     <div className="container-fluid" style={{ backgroundColor: '#002F35' }}>
@@ -159,7 +225,7 @@ export default function HalamanUtama() {
             <button
               className="btn btn-outline-success"
               type="submit"
-              onClick={handleSubmit}
+              onClick={ handleSubmit }
               disabled={!isFormValid}
             >
               Buat Resep
@@ -174,16 +240,24 @@ export default function HalamanUtama() {
           {gptResponse && (
             <div className="result-box">
               <h2>Resep Anda</h2>
-              <p>{gptResponse.judul}</p>
-              <p> Nama Masakan: {gptResponse.alatBahan}</p>
-              <p> {gptResponse.caraMasak2}</p>
               <p>{gptResponse.baru}</p>
+              <p id='judul'> Nama Masakan: {gptResponse.judul}</p>
+              <p id='alat_bahan'> {gptResponse.alatBahan}</p>
+              <p id='cara_masak'>{gptResponse.caraMasak2}</p>
+              <div className="justify-content-left">
+                <button
+                  className="btn btn-outline-success"
+                  type="submit"
+                  onClick={simpanResep}
+                >
+                  Simpan Resep
+                </button>
+              </div>
             </div>
           )}
+          <div className="pesan">{pesan}</div>
         </div>
       </div>
     </div>
   );
 }
-
-

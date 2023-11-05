@@ -4,7 +4,7 @@ import './Halaman.css'
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth"
 import { useNavigate, Link } from "react-router-dom"
 
-const Login = () => {
+function Login () {
 
   const navigate = useNavigate()
 
@@ -20,17 +20,12 @@ const Login = () => {
     .catch((err)=>{
       console.error(err)
     })
-
   }
-  const handleLogin = (userData) => {
-    // Tambahkan logika autentikasi di sini
-    console.log('User data:', userData);
-  };
 
   return (
     <div className="login-container">
       <h2>MASUK</h2>
-      <LoginForm onLogin={handleLogin} />
+      <LoginForm />
       <p>belum punya akun? <Link to="/reciperevelation/register"> Daftar disini </Link></p>
       <button className="Google" type='button' onClick={handleGoogleLogin}>
       Masuk Dengan GOOGLE
